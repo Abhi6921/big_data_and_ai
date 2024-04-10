@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <title>Upload Video File</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function validateForm() {
+            var fileInput = document.getElementById('inputfile');
+            if (fileInput.files.length === 0) {
+                alert("Please select a file to upload.");
+                return false;
+            }
+            return true;
+        }
+
+        function refreshPage() {
+            var scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            location.reload();
+            setTimeout(function(){
+                window.scrollTo(0, scrollPosition);
+            }, 0);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <form action="{{ url_for('upload') }}" class="form-signin" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+                <img class="mb-4" src="/static/ludus.png" alt="" width="200">
+                <h2 class="h3 mb-3 font-weight-normal">Upload Video File</h2>
+                <input type="file" name="file" class="form-control-file" id="inputfile" accept="video/*">
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
+                <p class="mt-2 mb-2 text-muted">Read the README.md for further instructions.</p>
+            </form>
+        </div>
+        <img id="my-video-image" class="mr-3" src="{{ url_for('video_feed') }}" onerror="this.style.display='none'"/>
+        <br>
+        <br>
+        <p id="distance_conclusion_text">Table distances based on participant height:</p>
+        <img class="mb-4" src="/static/distances.png" alt="" width="500">
+        <p id="average-height-text">Average Participant Height: {{ average_height }} cm</p>
+        <p id="average-paddle-to-ground">Average distance from paddle to ground: {{ avg_distance_paddle }} cm</p>
+        <p id="average-participant-to-paddle">Average distance from participant to paddle: {{ avg_distance_participant }} cm</p>
+        <p id="distance_conclusion">{{ distance_result }}</p>
+        <button class="btn btn-primary" onclick="refreshPage()">See Results</button>
+    </div>
+</body>
+</html>

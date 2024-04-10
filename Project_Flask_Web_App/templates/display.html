@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Display</title>
+    <style>
+        #video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <img id="video-frame" src="" alt="Video Frame">
+    </div>
+
+    <script>
+    function updateFrame(frameData) {
+        var videoFrameElement = document.getElementById('video-frame');
+        videoFrameElement.src = frameData;
+    }
+
+    function startDisplay() {
+        var source = new EventSource('/stream/{{ file_path }}');
+        source.onmessage = function (event) {
+            updateFrame('data:image/jpeg;base64,' + event.data);
+        };
+    }
+
+    window.onload = function () {
+        startDisplay();
+    };
+</script>
+</body>
+</html>
